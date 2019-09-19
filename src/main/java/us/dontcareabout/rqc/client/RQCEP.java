@@ -1,4 +1,4 @@
-package us.dontcareabout.npm.client;
+package us.dontcareabout.rqc.client;
 
 import com.google.gwt.user.client.Window;
 

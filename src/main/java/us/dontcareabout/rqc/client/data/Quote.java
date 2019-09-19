@@ -1,4 +1,4 @@
-package us.dontcareabout.npm.client.data;
+package us.dontcareabout.rqc.client.data;
 
 import java.util.ArrayList;
 

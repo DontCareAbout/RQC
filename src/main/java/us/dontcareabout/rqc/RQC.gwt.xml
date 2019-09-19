@@ -7,7 +7,7 @@
 	<source path="client" />
 	<source path="shared" />
 
-	<entry-point class="us.dontcareabout.npm.client.RQCEP" />
+	<entry-point class="us.dontcareabout.rqc.client.RQCEP" />
 	<stylesheet src="reset.css" />
 	<add-linker name="xsiframe" />
 	<collapse-all-properties />	
