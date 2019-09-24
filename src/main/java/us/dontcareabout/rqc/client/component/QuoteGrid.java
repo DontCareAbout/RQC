@@ -5,25 +5,23 @@ import java.util.ArrayList;
 import com.google.common.base.Strings;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.core.client.dom.XDOM;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.grid.GridSelectionModel;
+import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.grid.GroupingView;
 import com.sencha.gxt.widget.core.client.grid.RowExpander;
 
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.data.Quote;
+import us.dontcareabout.rqc.client.gf.Grid2;
 
-public class QuoteGrid extends Grid<Quote> {
+public class QuoteGrid extends Grid2<Quote> {
 	private static Properties properties = GWT.create(Properties.class);
 
 	private RowExpander<Quote> rowExpander = new RowExpander<Quote>(
@@ -58,33 +56,7 @@ public class QuoteGrid extends Grid<Quote> {
 	);
 
 	public QuoteGrid() {
-		GroupingView<Quote> view = new GroupingView<>();
-		view.groupBy(refNameCC);
-		view.setShowGroupedColumn(false);
-		view.setForceFit(true);
-		setView(view);
-
-		//這段是照抄 Gird(store, cm, view)
-		disabledStyle = null;
-		setSelectionModel(new GridSelectionModel<Quote>());
-
-		setAllowTextSelection(false);
-
-		SafeHtmlBuilder builder = new SafeHtmlBuilder();
-		view.getAppearance().render(builder);
-
-		setElement((Element) XDOM.create(builder.toSafeHtml()));
-		getElement().makePositionable();
-
-		//因為後頭 reconfigure() 也會作，所以這裡就跳過了
-		//sinkCellEvents();
-		////
-
-		reconfigure(
-			new ListStore<>(properties.key()),
-			genColumnModel()
-		);
-
+		init();
 		rowExpander.initPlugin(this);
 	}
 
@@ -93,7 +65,8 @@ public class QuoteGrid extends Grid<Quote> {
 		getStore().addAll(data);
 	}
 
-	private ColumnModel<Quote> genColumnModel() {
+	@Override
+	protected ColumnModel<Quote> genColumnModel() {
 		ArrayList<ColumnConfig<Quote, ?>> list = new ArrayList<>();
 		list.add(rowExpander);
 		list.add(refNameCC);
@@ -103,6 +76,20 @@ public class QuoteGrid extends Grid<Quote> {
 		list.add(new ColumnConfig<>(properties.score(), 10, "重要性"));
 		ColumnModel<Quote> result = new ColumnModel<>(list);
 		return result;
+	}
+
+	@Override
+	protected ListStore<Quote> genListStore() {
+		return new ListStore<>(properties.key());
+	}
+
+	@Override
+	protected GridView<Quote> genGridView() {
+		GroupingView<Quote> view = new GroupingView<>();
+		view.setShowGroupedColumn(false);
+		view.setForceFit(true);
+		view.groupBy(refNameCC);
+		return view;
 	}
 
 	interface Properties extends PropertyAccess<Quote> {
