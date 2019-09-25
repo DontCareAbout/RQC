@@ -29,8 +29,8 @@ public final class Quote extends SheetEntry {
 		return stringField("備註");
 	}
 
-	public Integer getScore() {
-		return intField("重要性");
+	public Double getScore() {
+		return doubleField("重要性");
 	}
 
 	public ArrayList<String> getTag() {

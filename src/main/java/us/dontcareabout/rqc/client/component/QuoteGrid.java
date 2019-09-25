@@ -67,10 +67,10 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	@Override
 	protected ColumnModel<Quote> genColumnModel() {
-		ColumnConfig<Quote, Integer> score = new ColumnConfig<>(properties.score(), 20, "重要性");
-		score.setCell(new AbstractCell<Integer>() {
+		ColumnConfig<Quote, Double> score = new ColumnConfig<>(properties.score(), 20, "重要性");
+		score.setCell(new AbstractCell<Double>() {
 			@Override
-			public void render(Context context, Integer value, SafeHtmlBuilder sb) {
+			public void render(Context context, Double value, SafeHtmlBuilder sb) {
 				String color = value > 0 ? "red" : "green";
 				String ratio = Math.abs(value) * 100 / 5 + "%";
 				sb.appendHtmlConstant("<div style='height:16px;width:" + ratio + ";background-color:" + color + ";float:right'></div>");
@@ -109,6 +109,6 @@ public class QuoteGrid extends Grid2<Quote> {
 		ValueProvider<Quote, String> page();
 		ValueProvider<Quote, String> text();
 		ValueProvider<Quote, String> note();
-		ValueProvider<Quote, Integer> score();
+		ValueProvider<Quote, Double> score();
 	}
 }
