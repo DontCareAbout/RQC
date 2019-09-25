@@ -67,13 +67,23 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	@Override
 	protected ColumnModel<Quote> genColumnModel() {
+		ColumnConfig<Quote, Integer> score = new ColumnConfig<>(properties.score(), 20, "重要性");
+		score.setCell(new AbstractCell<Integer>() {
+			@Override
+			public void render(Context context, Integer value, SafeHtmlBuilder sb) {
+				String color = value > 0 ? "red" : "green";
+				String ratio = Math.abs(value) * 100 / 5 + "%";
+				sb.appendHtmlConstant("<div style='height:16px;width:" + ratio + ";background-color:" + color + ";float:right'></div>");
+			}
+		});
+
 		ArrayList<ColumnConfig<Quote, ?>> list = new ArrayList<>();
-		list.add(rowExpander);
 		list.add(refNameCC);
+		list.add(score);
 		list.add(new ColumnConfig<>(properties.page(), 10, "頁數"));
-		list.add(new ColumnConfig<>(properties.text(), 100, "引用文字"));
+		list.add(new ColumnConfig<>(properties.text(), 120, "引用文字"));
 		list.add(new ColumnConfig<>(properties.note(), 100, "備註"));
-		list.add(new ColumnConfig<>(properties.score(), 10, "重要性"));
+		list.add(rowExpander);
 		ColumnModel<Quote> result = new ColumnModel<>(list);
 		return result;
 	}
