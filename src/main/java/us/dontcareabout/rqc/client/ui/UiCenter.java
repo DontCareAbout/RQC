@@ -37,7 +37,6 @@ public class UiCenter {
 	////////////////
 
 	public static void tagConditionChange(boolean condition) {
-		if (tagSet.isEmpty()) { return; }
 		eventBus.fireEvent(new TagConditionChangeEvent(condition));
 	}
 

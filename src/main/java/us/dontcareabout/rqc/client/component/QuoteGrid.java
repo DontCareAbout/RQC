@@ -15,6 +15,8 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 import com.sencha.gxt.data.shared.Store;
 import com.sencha.gxt.data.shared.Store.StoreFilter;
+import com.sencha.gxt.data.shared.event.StoreFilterEvent;
+import com.sencha.gxt.data.shared.event.StoreFilterEvent.StoreFilterHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.GridView;
@@ -86,8 +88,7 @@ public class QuoteGrid extends Grid2<Quote> {
 	}
 
 	public void refresh(List<Quote> data) {
-		getStore().clear();
-		getStore().addAll(data);
+		getStore().replaceAll(data);
 	}
 
 	@Override
@@ -115,8 +116,18 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	@Override
 	protected ListStore<Quote> genListStore() {
-		ListStore<Quote> result = new ListStore<>(properties.key());
+		final ListStore<Quote> result = new ListStore<>(properties.key());
 		result.addFilter(filter);
+		result.addStoreFilterHandler(new StoreFilterHandler<Quote>() {
+			@Override
+			public void onFilter(StoreFilterEvent<Quote> event) {
+				if (result.size() == 0) {
+					mask("沒有符合條件的資料");
+				} else {
+					unmask();
+				}
+			}
+		});
 		return result;
 	}
 
@@ -153,7 +164,7 @@ public class QuoteGrid extends Grid2<Quote> {
 
 		@Override
 		public boolean select(Store<Quote> store, Quote parent, Quote item) {
-			if (tagSet.isEmpty()) { return true; }
+			if (tagSet == null || tagSet.isEmpty()) { return true; }
 
 			if (condition) {
 				//直接用空間換取程式行數 XD
