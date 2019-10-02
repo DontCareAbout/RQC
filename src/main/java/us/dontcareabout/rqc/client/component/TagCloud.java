@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.sencha.gxt.chart.client.draw.RGB;
@@ -54,7 +55,7 @@ public class TagCloud extends LayerContainer {
 		addLayer(vll);
 	}
 
-	public void refresh(ArrayList<Quote> data) {
+	public void refresh(List<Quote> data) {
 		tagMap.clear();
 
 		for (Quote q : data) {

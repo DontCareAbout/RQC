@@ -1,5 +1,9 @@
 package us.dontcareabout.rqc.client.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 
@@ -12,12 +16,19 @@ import us.dontcareabout.rqc.client.data.QuoteReadyEvent.QuoteReadyHandler;
 public class DataCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
 
+	private static ArrayList<Quote> quoteList;
+
+	public static List<Quote> getQuote() {
+		return Collections.unmodifiableList(quoteList);
+	}
+
 	public static void wantQuote() {
 		SheetHappen.<Quote>get(SheetId.get(), 1,
 			new Callback<Quote>() {
 				@Override
 				public void onSuccess(Sheet<Quote> gs) {
-					eventBus.fireEvent(new QuoteReadyEvent(gs.getEntry()));
+					quoteList = gs.getEntry();
+					eventBus.fireEvent(new QuoteReadyEvent());
 				}
 
 				@Override

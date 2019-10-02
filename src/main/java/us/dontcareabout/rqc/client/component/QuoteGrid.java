@@ -1,6 +1,7 @@
 package us.dontcareabout.rqc.client.component;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Strings;
@@ -84,7 +85,7 @@ public class QuoteGrid extends Grid2<Quote> {
 		});
 	}
 
-	public void refresh(ArrayList<Quote> data) {
+	public void refresh(List<Quote> data) {
 		getStore().clear();
 		getStore().addAll(data);
 	}
