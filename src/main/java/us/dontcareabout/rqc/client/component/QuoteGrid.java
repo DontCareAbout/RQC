@@ -177,27 +177,26 @@ public class QuoteGrid extends Grid2<Quote> {
 		@Override
 		public boolean select(Store<Quote> store, Quote parent, Quote item) {
 			boolean result = true;
-			String paramValue = param.getKeyword();
-			String[] keywords;
 
-			//空字串即使 trim() 過，split() 還是會有一個 element，所以只好也過濾一次......
-			if (paramValue != null && !Strings.isNullOrEmpty(paramValue.trim())) {
-				keywords = paramValue.trim().split(" ");
-			} else {
-				keywords = null;
-			}
+			String[] keywords = param.getKeyword() == null ?
+				null : param.getKeyword().trim().split(" ");
 
 			if (keywords != null && keywords.length != 0) {
-				//上面處理過了，至少會有一個 element有正常值，所以這裡一律給 false
-				result = false;
-
 				for (String keyword : keywords) {
 					if (Strings.isNullOrEmpty(keyword)) { continue; }
-					result = result || (
-						item.getText().toLowerCase().contains(keyword.toLowerCase()) ||
-						item.getNote().toLowerCase().contains(keyword.toLowerCase())
-					);
-					if (result) { break; }	//因為是作 or，所以有一個中就不用繼續做了
+					if (param.isAnd()) {
+						result =
+							item.getText().toLowerCase().contains(keyword.toLowerCase()) ||
+							item.getNote().toLowerCase().contains(keyword.toLowerCase())
+						;
+						if (!result) { break; }	//因為是作 and，所以有一個沒中就不用繼續做了
+					} else {
+						result =
+							item.getText().toLowerCase().contains(keyword.toLowerCase()) ||
+							item.getNote().toLowerCase().contains(keyword.toLowerCase())
+						;
+						if (result) { break; }	//因為是作 or，所以有一個中就不用繼續做了
+					}
 				}
 			}
 
