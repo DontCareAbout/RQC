@@ -24,6 +24,7 @@ import com.sencha.gxt.widget.core.client.grid.GroupingView;
 import com.sencha.gxt.widget.core.client.grid.RowExpander;
 
 import us.dontcareabout.gxt.client.model.GetValueProvider;
+import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.data.Quote;
 import us.dontcareabout.rqc.client.gf.Grid2;
 import us.dontcareabout.rqc.client.ui.KeywordChangeEvent;
@@ -76,13 +77,7 @@ public class QuoteGrid extends Grid2<Quote> {
 		UiCenter.addKeywordChange(new KeywordChangeHandler() {
 			@Override
 			public void onKeywordChange(KeywordChangeEvent event) {
-				//空字串即使 trim() 過，split() 還是會有一個 element，所以只好也過濾一次......
-				if (event.data != null && !Strings.isNullOrEmpty(event.data.trim())) {
-					filter.keywords = event.data.trim().split(" ");
-				} else {
-					filter.keywords = null;
-				}
-
+				filter.param = event.data;
 				adjustFilter();
 			}
 		});
@@ -171,7 +166,7 @@ public class QuoteGrid extends Grid2<Quote> {
 	}
 
 	private class Filter implements StoreFilter<Quote> {
-		String[] keywords;
+		KeywordParam param = new KeywordParam();	//徹底預防 NPE...... XD
 
 		/** @see SelectTagChangeEvent#data */
 		Set<String> tagSet;
@@ -182,9 +177,18 @@ public class QuoteGrid extends Grid2<Quote> {
 		@Override
 		public boolean select(Store<Quote> store, Quote parent, Quote item) {
 			boolean result = true;
+			String paramValue = param.getKeyword();
+			String[] keywords;
+
+			//空字串即使 trim() 過，split() 還是會有一個 element，所以只好也過濾一次......
+			if (paramValue != null && !Strings.isNullOrEmpty(paramValue.trim())) {
+				keywords = paramValue.trim().split(" ");
+			} else {
+				keywords = null;
+			}
 
 			if (keywords != null && keywords.length != 0) {
-				//event handler 那裡有處理過，至少會有一個 element有正常值，所以這裡一律給 false
+				//上面處理過了，至少會有一個 element有正常值，所以這裡一律給 false
 				result = false;
 
 				for (String keyword : keywords) {

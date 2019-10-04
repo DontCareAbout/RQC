@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
+import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
 import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
 import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChangeHandler;
@@ -16,8 +17,8 @@ import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChange
 public class UiCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
 
-	public static void keywordChange(String keyword) {
-		eventBus.fireEvent(new KeywordChangeEvent(keyword));
+	public static void keywordChange(KeywordParam param) {
+		eventBus.fireEvent(new KeywordChangeEvent(param));
 	}
 
 	public static HandlerRegistration addKeywordChange(KeywordChangeHandler handler) {

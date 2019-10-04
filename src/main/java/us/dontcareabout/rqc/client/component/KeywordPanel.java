@@ -13,6 +13,8 @@ public class KeywordPanel extends FramedPanel {
 	private TextButton submit = new TextButton("篩選");
 	private TextButton clear = new TextButton("清除");
 
+	private KeywordParam param = new KeywordParam();
+
 	public KeywordPanel() {
 		setHeadingText("關鍵字");
 
@@ -24,15 +26,29 @@ public class KeywordPanel extends FramedPanel {
 			@Override
 			public void onSelect(SelectEvent event) {
 				keyword.setValue("");
-				UiCenter.keywordChange(keyword.getCurrentValue());
+				param.keyword = keyword.getCurrentValue();
+				UiCenter.keywordChange(param);
 			}
 		});
 
 		submit.addSelectHandler(new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				UiCenter.keywordChange(keyword.getCurrentValue());
+				param.keyword = keyword.getCurrentValue();
+				UiCenter.keywordChange(param);
 			}
 		});
+	}
+
+	public static class KeywordParam {
+		String keyword;
+		boolean isAnd;
+
+		public String getKeyword() {
+			return keyword;
+		}
+		public boolean isAnd() {
+			return isAnd;
+		}
 	}
 }
