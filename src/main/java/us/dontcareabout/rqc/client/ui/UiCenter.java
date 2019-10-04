@@ -9,14 +9,24 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
+import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
 import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
 import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChangeHandler;
 
 public class UiCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
 
-	private static HashSet<String> tagSet = new HashSet<>();
+	public static void keywordChange(String keyword) {
+		eventBus.fireEvent(new KeywordChangeEvent(keyword));
+	}
 
+	public static HandlerRegistration addKeywordChange(KeywordChangeHandler handler) {
+		return eventBus.addHandler(KeywordChangeEvent.TYPE, handler);
+	}
+
+	////////////////
+
+	private static HashSet<String> tagSet = new HashSet<>();
 	public static void selectTagChange(String tag, boolean isSelect) {
 		//雖然不太可能發生，不過還是文字意義上讓 fireEvent 的動作必然合理
 		boolean result;
