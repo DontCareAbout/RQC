@@ -26,6 +26,8 @@ import com.sencha.gxt.widget.core.client.grid.RowExpander;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.data.Quote;
 import us.dontcareabout.rqc.client.gf.Grid2;
+import us.dontcareabout.rqc.client.ui.KeywordChangeEvent;
+import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
 import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent;
 import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
 import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent;
@@ -71,6 +73,19 @@ public class QuoteGrid extends Grid2<Quote> {
 	public QuoteGrid() {
 		init();
 		rowExpander.initPlugin(this);
+		UiCenter.addKeywordChange(new KeywordChangeHandler() {
+			@Override
+			public void onKeywordChange(KeywordChangeEvent event) {
+				//空字串即使 trim() 過，split() 還是會有一個 element，所以只好也過濾一次......
+				if (event.data != null && !Strings.isNullOrEmpty(event.data.trim())) {
+					filter.keywords = event.data.trim().split(" ");
+				} else {
+					filter.keywords = null;
+				}
+
+				adjustFilter();
+			}
+		});
 		UiCenter.addSelectTagChange(new SelectTagChangeHandler() {
 			@Override
 			public void onSelectTag(SelectTagChangeEvent event) {
@@ -156,6 +171,8 @@ public class QuoteGrid extends Grid2<Quote> {
 	}
 
 	private class Filter implements StoreFilter<Quote> {
+		String[] keywords;
+
 		/** @see SelectTagChangeEvent#data */
 		Set<String> tagSet;
 
@@ -164,7 +181,26 @@ public class QuoteGrid extends Grid2<Quote> {
 
 		@Override
 		public boolean select(Store<Quote> store, Quote parent, Quote item) {
-			if (tagSet == null || tagSet.isEmpty()) { return true; }
+			boolean result = true;
+
+			if (keywords != null && keywords.length != 0) {
+				//event handler 那裡有處理過，至少會有一個 element有正常值，所以這裡一律給 false
+				result = false;
+
+				for (String keyword : keywords) {
+					if (Strings.isNullOrEmpty(keyword)) { continue; }
+					result = result || (
+						item.getText().toLowerCase().contains(keyword.toLowerCase()) ||
+						item.getNote().toLowerCase().contains(keyword.toLowerCase())
+					);
+					if (result) { break; }	//因為是作 or，所以有一個中就不用繼續做了
+				}
+			}
+
+			//沒有指定 tag 就直接用 keyword 比對的結果
+			if (tagSet == null || tagSet.isEmpty()) { return result; }
+
+			//用「and」處理 keyword 的結果與 tag 的結果
 
 			if (condition) {
 				//直接用空間換取程式行數 XD
@@ -180,10 +216,10 @@ public class QuoteGrid extends Grid2<Quote> {
 					}
 				}
 
-				return true;
+				return result;
 			} else {
 				for (String tag : item.getTag()) {
-					if (tagSet.contains(tag.toUpperCase())) { return true; }
+					if (tagSet.contains(tag.toUpperCase())) { return result; }
 				}
 
 				return false;
