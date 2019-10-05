@@ -51,7 +51,7 @@ public class TagCloud extends LayerContainer {
 
 		vll.setMargin(1);
 		vll.setGap(1);
-		vll.setLY(baseHeight + 10);
+		vll.setLY(baseHeight + 4);
 		addLayer(vll);
 	}
 
@@ -139,8 +139,8 @@ public class TagCloud extends LayerContainer {
 
 	private class SortButton extends TextButton {
 		SortButton() {
-			setBgColor(RGB.YELLOW);
-			setTextColor(RGB.BLUE);
+			setBgColor(RGB.BLACK);
+			setTextColor(RGB.WHITE);
 			refresh();
 			addSpriteSelectionHandler(new SpriteSelectionHandler() {
 				@Override
@@ -160,8 +160,8 @@ public class TagCloud extends LayerContainer {
 		boolean condition;
 
 		ConditionButton() {
-			setBgColor(RGB.YELLOW);
-			setTextColor(RGB.BLUE);
+			setBgColor(RGB.BLACK);
+			setTextColor(RGB.WHITE);
 			refresh();
 			addSpriteSelectionHandler(new SpriteSelectionHandler() {
 				@Override
