@@ -24,6 +24,7 @@ import com.sencha.gxt.widget.core.client.grid.GroupingView;
 import com.sencha.gxt.widget.core.client.grid.RowExpander;
 
 import us.dontcareabout.gxt.client.model.GetValueProvider;
+import us.dontcareabout.rqc.client.Util;
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.data.Quote;
 import us.dontcareabout.rqc.client.gf.Grid2;
@@ -36,14 +37,37 @@ import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChange
 import us.dontcareabout.rqc.client.ui.UiCenter;
 
 public class QuoteGrid extends Grid2<Quote> {
-	private static Properties properties = GWT.create(Properties.class);
+	private static final int firstWidth = 100;
+	private static final Properties properties = GWT.create(Properties.class);
 
 	private RowExpander<Quote> rowExpander = new RowExpander<Quote>(
 		new AbstractCell<Quote>() {
+			final String headerStyle = "font-size:16px;margin: 2px 50px 0px " + (firstWidth + 20) + "px;padding: 8px;background-color: #B3729F;color: white;font-weight: bold;";
+			final String textStyle = 	"font-size:14px;margin: 0px 50px 4px " + (firstWidth + 20) + "px;padding: 4px 8px;border: #B3729F 3px solid;line-height: 1.5;";
+
 			@Override
 			public void render(Context context, Quote value, SafeHtmlBuilder sb) {
-				sb.appendHtmlConstant("<div style='font-size:16px; height:20px; padding: 5px 0 0 0;'>引用文字：</div><div style='font-size:14px; margin:5px 5px 5px 28px'>" + value.getText() + "</div>");
-				sb.appendHtmlConstant("<div style='font-size:16px; height:20px; padding: 5px 0 0 0;'>備註：</div><div style='font-size:14px; margin:5px 5px 5px 28px'>" + value.getNote() + "</div>");
+				process("引用文字", value.getText(), sb);
+				process("備註", value.getNote(), sb);
+				sb.appendHtmlConstant("<div style='height:8px'></div>");
+			}
+
+			private void process(String title, String string, SafeHtmlBuilder sb) {
+				ArrayList<int[]> indexList = Util.keywordIndex(string, filter.keywords);
+
+				sb.appendHtmlConstant("<div style='" + headerStyle + "'>" + title + "：</div>");
+				sb.appendHtmlConstant("<div style='" + textStyle + "'>");
+
+				int start = 0;
+				for (int[] index : indexList) {
+					sb.appendHtmlConstant(string.substring(start, index[0]));
+					sb.appendHtmlConstant("<span style='background-color:yellow; padding:1px 4px; border-radius:4px'>" + string.substring(index[0], index[1]) + "</span>");
+					start = index[1];
+				}
+				if (start != string.length()) {
+					sb.appendHtmlConstant(string.substring(start, string.length()));
+				}
+				sb.appendHtmlConstant("</div>");
 			}
 		}
 	);
@@ -103,7 +127,7 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	@Override
 	protected ColumnModel<Quote> genColumnModel() {
-		ColumnConfig<Quote, Double> score = new ColumnConfig<>(properties.score(), 20, "重要性");
+		ColumnConfig<Quote, Double> score = new ColumnConfig<>(properties.score(), firstWidth, "重要性");
 		score.setCell(new AbstractCell<Double>() {
 			@Override
 			public void render(Context context, Double value, SafeHtmlBuilder sb) {
@@ -112,11 +136,15 @@ public class QuoteGrid extends Grid2<Quote> {
 				sb.appendHtmlConstant("<div style='height:16px;width:" + ratio + ";background-color:" + color + ";float:right'></div>");
 			}
 		});
+		score.setFixed(true);
+
+		ColumnConfig<Quote, String> page = new ColumnConfig<>(properties.page(), 80, "頁數");
+		page.setFixed(true);
 
 		ArrayList<ColumnConfig<Quote, ?>> list = new ArrayList<>();
 		list.add(refNameCC);
 		list.add(score);
-		list.add(new ColumnConfig<>(properties.page(), 10, "頁數"));
+		list.add(page);
 		list.add(new ColumnConfig<>(properties.text(), 120, "引用文字"));
 		list.add(new ColumnConfig<>(properties.note(), 100, "備註"));
 		list.add(rowExpander);
@@ -153,6 +181,12 @@ public class QuoteGrid extends Grid2<Quote> {
 	private void adjustFilter() {
 		getStore().setEnableFilters(false);
 		getStore().setEnableFilters(true);
+
+		if (filter.keywords == null) { return; }
+
+		for (int i = 0; i < store.size(); i++) {
+			rowExpander.expandRow(i);
+		}
 	}
 
 	interface Properties extends PropertyAccess<Quote> {
@@ -167,6 +201,7 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	private class Filter implements StoreFilter<Quote> {
 		KeywordParam param = new KeywordParam();	//徹底預防 NPE...... XD
+		String[] keywords;	//TODO 補強 keywords 之間可能造成的矛盾，例如「tea team」
 
 		/** @see SelectTagChangeEvent#data */
 		Set<String> tagSet;
@@ -178,7 +213,7 @@ public class QuoteGrid extends Grid2<Quote> {
 		public boolean select(Store<Quote> store, Quote parent, Quote item) {
 			boolean result = true;
 
-			String[] keywords = param.getKeyword() == null ?
+			keywords = param.getKeyword() == null ?
 				null : param.getKeyword().trim().split(" ");
 
 			if (keywords != null && keywords.length != 0) {
