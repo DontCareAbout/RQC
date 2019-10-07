@@ -1,10 +1,10 @@
-package us.dontcareabout.rqc.client.ui;
+package us.dontcareabout.rqc.client.ui.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
-import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent.KeywordChangeHandler;
 
 public class KeywordChangeEvent extends GwtEvent<KeywordChangeHandler> {
 	public static final Type<KeywordChangeHandler> TYPE = new Type<KeywordChangeHandler>();

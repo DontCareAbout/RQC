@@ -10,9 +10,12 @@ import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
-import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
-import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
-import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent.KeywordChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent.SelectTagChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent.TagConditionChangeHandler;
 
 public class UiCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();

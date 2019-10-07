@@ -28,13 +28,13 @@ import us.dontcareabout.rqc.client.Util;
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.data.Quote;
 import us.dontcareabout.rqc.client.gf.Grid2;
-import us.dontcareabout.rqc.client.ui.KeywordChangeEvent;
-import us.dontcareabout.rqc.client.ui.KeywordChangeEvent.KeywordChangeHandler;
-import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent;
-import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
-import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent;
-import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChangeHandler;
 import us.dontcareabout.rqc.client.ui.UiCenter;
+import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent.KeywordChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent.SelectTagChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent.TagConditionChangeHandler;
 
 public class QuoteGrid extends Grid2<Quote> {
 	private static final int firstWidth = 100;

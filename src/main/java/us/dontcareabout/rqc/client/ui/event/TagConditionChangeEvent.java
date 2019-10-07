@@ -1,9 +1,9 @@
-package us.dontcareabout.rqc.client.ui;
+package us.dontcareabout.rqc.client.ui.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
-import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent.TagConditionChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent.TagConditionChangeHandler;
 
 public class TagConditionChangeEvent extends GwtEvent<TagConditionChangeHandler> {
 	public static final Type<TagConditionChangeHandler> TYPE = new Type<TagConditionChangeHandler>();

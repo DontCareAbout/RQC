@@ -1,4 +1,4 @@
-package us.dontcareabout.rqc.client.ui;
+package us.dontcareabout.rqc.client.ui.event;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
-import us.dontcareabout.rqc.client.ui.SelectTagChangeEvent.SelectTagChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent.SelectTagChangeHandler;
 
 public class SelectTagChangeEvent extends GwtEvent<SelectTagChangeHandler> {
 	public static final Type<SelectTagChangeHandler> TYPE = new Type<SelectTagChangeHandler>();

@@ -16,8 +16,8 @@ import us.dontcareabout.gxt.client.draw.component.TextButton;
 import us.dontcareabout.rqc.client.data.Quote;
 import us.dontcareabout.rqc.client.gf.HorizontalLayoutLayer;
 import us.dontcareabout.rqc.client.gf.VerticalLayoutLayer;
-import us.dontcareabout.rqc.client.ui.TagConditionChangeEvent;
 import us.dontcareabout.rqc.client.ui.UiCenter;
+import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent;
 
 public class TagCloud extends LayerContainer {
 	private static final String BY_ALPHABETICAL = "Ａ↓";
