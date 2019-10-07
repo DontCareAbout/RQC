@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.container" 
+	xmlns:rqc="urn:import:us.dontcareabout.rqc.client.component" 
+	xmlns:b="urn:import:com.sencha.gxt.widget.core.client.button" xmlns:core="urn:import:com.sencha.gxt.widget.core.client" xmlns:f="urn:import:com.sencha.gxt.widget.core.client.form">
+	
+	<ui:with field="eastData" type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
+		<ui:attributes size="200" collapsible="true" collapseMini="true" />
+	</ui:with>
+	<ui:with field="keywordMargins" type="com.sencha.gxt.core.client.util.Margins" >
+		<ui:attributes top="2" right="2" bottom="12" left="2" />
+	</ui:with>
+	<ui:with field="keywordVLD" type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
+		<ui:attributes width="1" height="130" margins="{keywordMargins}" />
+	</ui:with>
+	<ui:with field="tagVLD" type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
+		<ui:attributes width="1" height="-1" />
+	</ui:with>
+	
+	<c:BorderLayoutContainer>
+		<c:east layoutData="{eastData}">
+			<core:ContentPanel>
+				<c:VerticalLayoutContainer scrollMode="AUTOY" adjustForScroll="true">
+					<rqc:KeywordPanel ui:field="keywordPanel" layoutData="{keywordVLD}" />
+					<rqc:TagCloud ui:field="tagCloud" layoutData="{tagVLD}" />
+				</c:VerticalLayoutContainer>
+			</core:ContentPanel>
+		</c:east>
+		<c:center>
+			<rqc:QuoteGrid ui:field="grid" />
+		</c:center>
+	</c:BorderLayoutContainer>
+</ui:UiBinder> 
