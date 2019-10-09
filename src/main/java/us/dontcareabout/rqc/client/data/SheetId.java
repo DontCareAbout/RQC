@@ -17,12 +17,14 @@ public class SheetId {
 	private static final String KEY = "SheetId";
 
 	private String id;
+	private String name;
 	private boolean select;
 
 	public SheetId() {}
 
-	public SheetId(String id, boolean select) {
+	public SheetId(String id, String name, boolean select) {
 		this.id = id;
+		this.name = name;
 		this.select = select;
 	}
 
@@ -32,6 +34,14 @@ public class SheetId {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public boolean isSelect() {
@@ -47,6 +57,8 @@ public class SheetId {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (select ? 1231 : 1237);
 		return result;
 	}
 
@@ -63,6 +75,13 @@ public class SheetId {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (select != other.select)
 			return false;
 		return true;
 	}
@@ -100,7 +119,7 @@ public class SheetId {
 		storage.removeItem(KEY);
 	}
 
-	private static native String jsValue() /*-{
+	public static native String jsValue() /*-{
 		return $wnd.sheetId;
 	}-*/;
 }
