@@ -12,6 +12,7 @@ import us.dontcareabout.gwt.client.google.Sheet;
 import us.dontcareabout.gwt.client.google.SheetHappen;
 import us.dontcareabout.gwt.client.google.SheetHappen.Callback;
 import us.dontcareabout.rqc.client.data.QuoteReadyEvent.QuoteReadyHandler;
+import us.dontcareabout.rqc.client.ui.UiCenter;
 
 public class DataCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
@@ -22,13 +23,15 @@ public class DataCenter {
 		return Collections.unmodifiableList(quoteList);
 	}
 
-	public static void wantQuote() {
-		SheetHappen.<Quote>get(SheetId.get(), 1,
+	public static void wantQuote(String sheetId) {
+		UiCenter.mask("資料讀取中......");
+		SheetHappen.<Quote>get(sheetId, 1,
 			new Callback<Quote>() {
 				@Override
 				public void onSuccess(Sheet<Quote> gs) {
 					quoteList = gs.getEntry();
 					eventBus.fireEvent(new QuoteReadyEvent());
+					UiCenter.unmask();
 				}
 
 				@Override
