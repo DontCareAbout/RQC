@@ -14,11 +14,13 @@ import com.sencha.gxt.data.shared.PropertyAccess;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 
+import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.data.SheetId;
 import us.dontcareabout.rqc.client.gf.Grid2;
 
 public class SheetIdGrid extends Grid2<SheetId> {
 	private static final Properties properties = GWT.create(Properties.class);
+	private static String js_name = "JS 指定值";
 
 	public SheetIdGrid() {
 		init();
@@ -33,14 +35,29 @@ public class SheetIdGrid extends Grid2<SheetId> {
 
 	@Override
 	protected ColumnModel<SheetId> genColumnModel() {
-		ColumnConfig<SheetId, Boolean> defaultSelect = new ColumnConfig<>(properties.select(), 20, "預設開啟");
+		ColumnConfig<SheetId, Integer> defaultSelect = new ColumnConfig<>(
+			new GetValueProvider<SheetId, Integer>() {
+				@Override
+				public Integer getValue(SheetId object) {
+					if (!object.isSelect()) { return 0; }
+					if (SheetId.jsValue() == null) { return 1; }
+					return js_name.equals(object.getName()) ? 1 : 2;
+				}
+			},
+			100, "預設開啟順位"
+		);
+		defaultSelect.setFixed(true);
 		defaultSelect.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		defaultSelect.setCell(new AbstractCell<Boolean>() {
+		defaultSelect.setCell(new AbstractCell<Integer>() {
 			@Override
-			public void render(Context context, Boolean value, SafeHtmlBuilder sb) {
-				if (!value) { return; }
+			public void render(Context context, Integer value, SafeHtmlBuilder sb) {
+				if (value == 0) { return; }
 
-				sb.appendHtmlConstant("<div style='margin-left:auto;margin-right:auto;width:16px;height:16px;background-color:red;'></div>");
+				sb.appendHtmlConstant(
+					"<div style='margin-left:auto;margin-right:auto;width:16px;height:24px;font-size:14px;color:red;'>"
+					+ value
+					+ "</div>"
+				);
 			}
 		});
 
@@ -56,11 +73,7 @@ public class SheetIdGrid extends Grid2<SheetId> {
 		String js = SheetId.jsValue();
 
 		if (js != null) {
-			for (SheetId sid : data) {
-				sid.setSelect(false);
-			}
-
-			SheetId sid = new SheetId(js, "JS 指定值", true);
+			SheetId sid = new SheetId(js, js_name, true);
 			data.add(sid);
 		}
 
