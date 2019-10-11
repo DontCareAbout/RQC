@@ -60,9 +60,17 @@ public class UiCenter {
 
 	////////////////////////////////
 
+	private final static MainView mainView = new MainView();
+
 	public static void start() {
-		viewport.add(new QuoteView());
+		viewport.add(mainView);
 	}
+
+	public static void toQuoteView() {
+		mainView.toQuoteView();
+	}
+
+	////////////////////////////////
 
 	private final static Viewport viewport = new Viewport();
 	static {
