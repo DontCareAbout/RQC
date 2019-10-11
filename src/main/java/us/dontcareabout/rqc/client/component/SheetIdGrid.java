@@ -7,16 +7,21 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.sencha.gxt.cell.core.client.TextButtonCell;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 
 import us.dontcareabout.gxt.client.model.GetValueProvider;
+import us.dontcareabout.rqc.client.data.DataCenter;
 import us.dontcareabout.rqc.client.data.SheetId;
 import us.dontcareabout.rqc.client.gf.Grid2;
+import us.dontcareabout.rqc.client.ui.UiCenter;
 
 public class SheetIdGrid extends Grid2<SheetId> {
 	private static final Properties properties = GWT.create(Properties.class);
@@ -61,10 +66,28 @@ public class SheetIdGrid extends Grid2<SheetId> {
 			}
 		});
 
+		TextButtonCell reloadBtn = new TextButtonCell();
+		reloadBtn.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				UiCenter.toQuoteView();
+				DataCenter.wantQuote(store.get(event.getContext().getIndex()).getId());
+			}
+		});
+		ColumnConfig<SheetId, String> reload = new ColumnConfig<>(new GetValueProvider<SheetId, String>() {
+			@Override
+			public String getValue(SheetId object) {
+				return "載入";
+			}
+		}, 80, "");
+		reload.setFixed(true);
+		reload.setCell(reloadBtn);
+
 		ArrayList<ColumnConfig<SheetId, ?>> list = new ArrayList<>();
 		list.add(defaultSelect);
 		list.add(new ColumnConfig<>(properties.name(), 50, "名稱"));
 		list.add(new ColumnConfig<>(properties.id(), 100, "Sheet ID"));
+		list.add(reload);
 		return new ColumnModel<>(list);
 	}
 
