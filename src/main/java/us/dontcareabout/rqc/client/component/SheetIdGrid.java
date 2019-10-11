@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.sencha.gxt.cell.core.client.TextButtonCell;
@@ -24,6 +26,8 @@ import us.dontcareabout.rqc.client.data.DataCenter;
 import us.dontcareabout.rqc.client.data.SheetId;
 import us.dontcareabout.rqc.client.gf.Grid2;
 import us.dontcareabout.rqc.client.ui.UiCenter;
+import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent;
+import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent.RefreshSheetIdStoreHandler;
 
 public class SheetIdGrid extends Grid2<SheetId> {
 	private static final Properties properties = GWT.create(Properties.class);
@@ -40,6 +44,20 @@ public class SheetIdGrid extends Grid2<SheetId> {
 	public SheetIdGrid() {
 		init();
 		view.setForceFit(true);
+		getSelectionModel().addSelectionHandler(new SelectionHandler<SheetId>() {
+			@Override
+			public void onSelection(SelectionEvent<SheetId> event) {
+				if (event.getSelectedItem().getId().equals(SheetId.jsValue())) { return; }
+
+				UiCenter.sheetIdSelect(event.getSelectedItem());
+			}
+		});
+		UiCenter.addRefreshSheetIdStore(new RefreshSheetIdStoreHandler() {
+			@Override
+			public void onRefreshSheetIdStore(RefreshSheetIdStoreEvent event) {
+				refresh();
+			}
+		});
 		refresh();
 	}
 
@@ -81,13 +99,13 @@ public class SheetIdGrid extends Grid2<SheetId> {
 			public String getValue(SheetId object) {
 				return "載入";
 			}
-		}, 80, "");
+		}, 50, "");
 		reload.setFixed(true);
 		reload.setCell(reloadBtn);
 
 		ArrayList<ColumnConfig<SheetId, ?>> list = new ArrayList<>();
 		list.add(defaultSelect);
-		list.add(new ColumnConfig<>(properties.name(), 50, "名稱"));
+		list.add(new ColumnConfig<>(properties.name(), 40, "名稱"));
 		list.add(new ColumnConfig<>(properties.id(), 100, "Sheet ID"));
 		list.add(reload);
 		return new ColumnModel<>(list);
