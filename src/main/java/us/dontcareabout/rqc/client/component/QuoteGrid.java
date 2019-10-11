@@ -123,6 +123,7 @@ public class QuoteGrid extends Grid2<Quote> {
 
 	public void refresh(List<Quote> data) {
 		getStore().replaceAll(data);
+		checkEmpty();
 	}
 
 	@Override
@@ -159,11 +160,7 @@ public class QuoteGrid extends Grid2<Quote> {
 		result.addStoreFilterHandler(new StoreFilterHandler<Quote>() {
 			@Override
 			public void onFilter(StoreFilterEvent<Quote> event) {
-				if (result.size() == 0) {
-					mask("沒有符合條件的資料");
-				} else {
-					unmask();
-				}
+				checkEmpty();
 			}
 		});
 		return result;
@@ -186,6 +183,14 @@ public class QuoteGrid extends Grid2<Quote> {
 
 		for (int i = 0; i < store.size(); i++) {
 			rowExpander.expandRow(i);
+		}
+	}
+
+	private void checkEmpty() {
+		if (store.size() == 0) {
+			mask("沒有符合條件的資料");
+		} else {
+			unmask();
 		}
 	}
 
