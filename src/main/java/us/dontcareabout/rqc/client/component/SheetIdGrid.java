@@ -12,6 +12,8 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+import com.sencha.gxt.data.shared.SortDir;
+import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -25,7 +27,15 @@ import us.dontcareabout.rqc.client.ui.UiCenter;
 
 public class SheetIdGrid extends Grid2<SheetId> {
 	private static final Properties properties = GWT.create(Properties.class);
-	private static String js_name = "JS 指定值";
+	private final static String js_name = "JS 指定值";
+	private static final GetValueProvider<SheetId, Integer> orderVP = new GetValueProvider<SheetId, Integer>() {
+		@Override
+		public Integer getValue(SheetId object) {
+			if (!object.isSelect()) { return Integer.MAX_VALUE; }
+			if (SheetId.jsValue() == null) { return 1; }
+			return js_name.equals(object.getName()) ? 1 : 2;
+		}
+	};
 
 	public SheetIdGrid() {
 		init();
@@ -35,28 +45,20 @@ public class SheetIdGrid extends Grid2<SheetId> {
 
 	@Override
 	protected ListStore<SheetId> genListStore() {
-		return new ListStore<>(properties.key());
+		ListStore<SheetId> result = new ListStore<>(properties.key());
+		result.addSortInfo(new StoreSortInfo<>(orderVP, SortDir.ASC));
+		return result;
 	}
 
 	@Override
 	protected ColumnModel<SheetId> genColumnModel() {
-		ColumnConfig<SheetId, Integer> defaultSelect = new ColumnConfig<>(
-			new GetValueProvider<SheetId, Integer>() {
-				@Override
-				public Integer getValue(SheetId object) {
-					if (!object.isSelect()) { return 0; }
-					if (SheetId.jsValue() == null) { return 1; }
-					return js_name.equals(object.getName()) ? 1 : 2;
-				}
-			},
-			100, "預設開啟順位"
-		);
+		ColumnConfig<SheetId, Integer> defaultSelect = new ColumnConfig<>(orderVP, 100, "預設開啟順位");
 		defaultSelect.setFixed(true);
 		defaultSelect.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		defaultSelect.setCell(new AbstractCell<Integer>() {
 			@Override
 			public void render(Context context, Integer value, SafeHtmlBuilder sb) {
-				if (value == 0) { return; }
+				if (value == Integer.MAX_VALUE) { return; }
 
 				sb.appendHtmlConstant(
 					"<div style='margin-left:auto;margin-right:auto;width:16px;height:24px;font-size:14px;color:red;'>"
