@@ -10,10 +10,15 @@ import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
+import us.dontcareabout.rqc.client.data.SheetId;
 import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent;
 import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent.KeywordChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent;
+import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent.RefreshSheetIdStoreHandler;
 import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent;
 import us.dontcareabout.rqc.client.ui.event.SelectTagChangeEvent.SelectTagChangeHandler;
+import us.dontcareabout.rqc.client.ui.event.SheetIdSelectEvent;
+import us.dontcareabout.rqc.client.ui.event.SheetIdSelectEvent.SheetIdSelectHandler;
 import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent;
 import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent.TagConditionChangeHandler;
 
@@ -56,6 +61,26 @@ public class UiCenter {
 
 	public static HandlerRegistration addTagConditionChange(TagConditionChangeHandler handler) {
 		return eventBus.addHandler(TagConditionChangeEvent.TYPE, handler);
+	}
+
+	////////////////
+
+	public static void sheetIdSelect(SheetId sid) {
+		eventBus.fireEvent(new SheetIdSelectEvent(sid));
+	}
+
+	public static HandlerRegistration addSheetIdSelect(SheetIdSelectHandler handler) {
+		return eventBus.addHandler(SheetIdSelectEvent.TYPE, handler);
+	}
+
+	////////////////
+
+	public static void refreshSheetIdStore() {
+		eventBus.fireEvent(new RefreshSheetIdStoreEvent());
+	}
+
+	public static HandlerRegistration addRefreshSheetIdStore(RefreshSheetIdStoreHandler handler) {
+		return eventBus.addHandler(RefreshSheetIdStoreEvent.TYPE, handler);
 	}
 
 	////////////////////////////////
