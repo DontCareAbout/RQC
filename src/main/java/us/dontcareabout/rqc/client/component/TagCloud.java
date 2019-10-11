@@ -58,6 +58,11 @@ public class TagCloud extends LayerContainer {
 	public void refresh(List<Quote> data) {
 		tagMap.clear();
 
+		if (data.isEmpty()) {
+			rebuildUI();
+			return;
+		}
+
 		for (Quote q : data) {
 			for (String tag : q.getTag()) {
 				tag = tag.substring(0, 1).toUpperCase() + tag.substring(1).toLowerCase();
