@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.Window;
 
-import us.dontcareabout.gwt.client.Console;
 import us.dontcareabout.gwt.client.google.Sheet;
 import us.dontcareabout.gwt.client.google.SheetHappen;
 import us.dontcareabout.gwt.client.google.SheetHappen.Callback;
@@ -16,6 +16,15 @@ import us.dontcareabout.rqc.client.ui.UiCenter;
 
 public class DataCenter {
 	private final static SimpleEventBus eventBus = new SimpleEventBus();
+
+	private static void loadError() {
+		Window.alert("資料載入失敗。\n"
+			+ "請檢查試算表網址是否正確、是否已作「發布到網路」動作。"
+		);
+		UiCenter.unmask();
+	}
+
+	////////////////
 
 	private static ArrayList<Quote> quoteList;
 
@@ -36,7 +45,7 @@ public class DataCenter {
 
 				@Override
 				public void onError(Throwable exception) {
-					Console.log(exception);
+					loadError();
 				}
 		});
 	}
@@ -44,5 +53,6 @@ public class DataCenter {
 	public static HandlerRegistration addQuoteReady(QuoteReadyHandler handler) {
 		return eventBus.addHandler(QuoteReadyEvent.TYPE, handler);
 	}
+
 	////////////////
 }
