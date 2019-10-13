@@ -27,4 +27,4 @@
 
 
 [RQC sheet]: https://docs.google.com/spreadsheets/d/1P2ch_lO9ncI7QGl3O1RDwk3XCkbxc9n_8GAnZCAgo4k
-[RQC host page]: https://dontcareabout.github.io/CDN/RQC/RQC.html
+[RQC host page]: https://dontcareabout.github.io/CDN/RQC.html
