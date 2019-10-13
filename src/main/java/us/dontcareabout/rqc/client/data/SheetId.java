@@ -84,6 +84,7 @@ public class SheetId {
 	 * <p>
 	 * 如果 host page 有給值則第一優先，
 	 * 若無則從 local storage 中取第一個（理論上也只有一個） {@link #isSelect()} 為 true 的 id 值。
+	 * 如果 local storage 沒有資料或是都沒指定 {@link #isSelect()}，則給 sample sheet。
 	 */
 	public static String get() {
 		String js = jsValue();
@@ -94,7 +95,7 @@ public class SheetId {
 			if (id.isSelect()) { return id.getId(); }
 		}
 
-		return null;
+		return "1rr293klEVOjHUKiKgAotCpXBWYIASsCMZEZEVfkanP4";
 	}
 
 	public static ArrayList<SheetId> retrieve() {
