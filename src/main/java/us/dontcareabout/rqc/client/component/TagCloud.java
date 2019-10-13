@@ -58,11 +58,6 @@ public class TagCloud extends LayerContainer {
 	public void refresh(List<Quote> data) {
 		tagMap.clear();
 
-		if (data.isEmpty()) {
-			rebuildUI();
-			return;
-		}
-
 		for (Quote q : data) {
 			for (String tag : q.getTag()) {
 				tag = tag.substring(0, 1).toUpperCase() + tag.substring(1).toLowerCase();
@@ -77,12 +72,20 @@ public class TagCloud extends LayerContainer {
 			}
 		}
 
+		//無論是沒有資料、或是有資料但是沒給 tag，tagMap 都會是空的
+		//所以要阻止進行後面計算 min 的部份
+		if (tagMap.isEmpty()) {
+			rebuildUI();
+			return;
+		}
+
 		boolean typeTmp = type;	//為了以後重複 load 資料作準備
 		type = false;
 		ArrayList<String> tagList = Lists.newArrayList(tagMap.keySet());
 		Collections.sort(tagList, comparator);
 		min = tagMap.get(tagList.get(tagList.size() - 1)).amount;
-		diff = tagMap.get(tagList.get(0)).amount - min;
+		//如果最大值跟最小值一樣就給 1，不然後面會出現除以 0 的問題
+		diff = Math.max(tagMap.get(tagList.get(0)).amount - min, 1);
 		type = typeTmp;
 
 		rebuildUI();
