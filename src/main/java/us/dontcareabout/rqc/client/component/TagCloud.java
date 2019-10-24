@@ -13,9 +13,9 @@ import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelect
 
 import us.dontcareabout.gxt.client.draw.LayerContainer;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
+import us.dontcareabout.gxt.client.draw.layout.HorizontalLayoutLayer;
+import us.dontcareabout.gxt.client.draw.layout.VerticalLayoutLayer;
 import us.dontcareabout.rqc.client.data.Quote;
-import us.dontcareabout.rqc.client.gf.HorizontalLayoutLayer;
-import us.dontcareabout.rqc.client.gf.VerticalLayoutLayer;
 import us.dontcareabout.rqc.client.ui.UiCenter;
 import us.dontcareabout.rqc.client.ui.event.TagConditionChangeEvent;
 
@@ -45,11 +45,11 @@ public class TagCloud extends LayerContainer {
 	public TagCloud() {
 		hll.addChild(sortBtn, 0.5);;
 		hll.addChild(conditionBtn, 0.5);
-		hll.setMargin(1);
+		hll.setMargins(1);
 		hll.setGap(4);
 		addLayer(hll);
 
-		vll.setMargin(1);
+		vll.setMargins(1);
 		vll.setGap(1);
 		vll.setLY(baseHeight + 4);
 		addLayer(vll);
@@ -111,7 +111,7 @@ public class TagCloud extends LayerContainer {
 		vll.redeploy();
 		vll.resize(this.getOffsetWidth(), 1);	//高度不重要 XD
 
-		setPixelSize(this.getOffsetWidth(), (int)vll.getTotalSize() + baseHeight + 10);
+		setPixelSize(this.getOffsetWidth(), (int)vll.getViewSize() + baseHeight + 10);
 	}
 
 	private void changeType() {
