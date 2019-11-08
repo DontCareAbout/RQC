@@ -21,10 +21,10 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 
+import us.dontcareabout.gxt.client.component.Grid2;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.data.DataCenter;
 import us.dontcareabout.rqc.client.data.SheetId;
-import us.dontcareabout.rqc.client.gf.Grid2;
 import us.dontcareabout.rqc.client.ui.UiCenter;
 import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent;
 import us.dontcareabout.rqc.client.ui.event.RefreshSheetIdStoreEvent.RefreshSheetIdStoreHandler;

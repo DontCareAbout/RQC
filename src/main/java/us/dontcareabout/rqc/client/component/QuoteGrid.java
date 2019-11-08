@@ -23,11 +23,11 @@ import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.grid.GroupingView;
 import com.sencha.gxt.widget.core.client.grid.RowExpander;
 
+import us.dontcareabout.gxt.client.component.Grid2;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.Util;
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.data.Quote;
-import us.dontcareabout.rqc.client.gf.Grid2;
 import us.dontcareabout.rqc.client.ui.UiCenter;
 import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent;
 import us.dontcareabout.rqc.client.ui.event.KeywordChangeEvent.KeywordChangeHandler;
