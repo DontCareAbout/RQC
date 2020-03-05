@@ -38,9 +38,11 @@ public class DataCenter {
 			new Callback<Quote>() {
 				@Override
 				public void onSuccess(Sheet<Quote> gs) {
+					//優先作 unmask()，這樣可以避免取得的 sheet 欄位不合 RQC 規格
+					//UI 可能會炸 exception 而導致程式完全無法操作的問題
+					UiCenter.unmask();
 					quoteList = gs.getEntry();
 					eventBus.fireEvent(new QuoteReadyEvent());
-					UiCenter.unmask();
 				}
 
 				@Override
