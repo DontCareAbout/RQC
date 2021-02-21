@@ -24,7 +24,6 @@ import com.sencha.gxt.widget.core.client.grid.GroupingView;
 import com.sencha.gxt.widget.core.client.grid.RowExpander;
 
 import us.dontcareabout.gxt.client.component.Grid2;
-import us.dontcareabout.gxt.client.model.GetValueProvider;
 import us.dontcareabout.rqc.client.Util;
 import us.dontcareabout.rqc.client.component.KeywordPanel.KeywordParam;
 import us.dontcareabout.rqc.client.data.Quote;
@@ -268,5 +267,15 @@ public class QuoteGrid extends Grid2<Quote> {
 				return false;
 			}
 		}
+	}
+
+	//XXX 由於某種神秘的理由，使用原本 GF 版（getPath() 回傳 null）會炸 NPE
+	//所以只好以最簡單的方式提供另一個版本
+	//最詭異的是 GST 的 SheetIdGrid 也用到 GF 版，但是沒事... Orz
+	//目前不處理也無法處理... [蓋牌]
+	private abstract class GetValueProvider<T, V> implements ValueProvider<T, V> {
+		@Override public void setValue(T object, V value) {}
+
+		@Override public String getPath() { return ""; }
 	}
 }
