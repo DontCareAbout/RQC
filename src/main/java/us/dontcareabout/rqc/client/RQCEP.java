@@ -2,15 +2,14 @@ package us.dontcareabout.rqc.client;
 
 import com.google.gwt.user.client.Window;
 
-import us.dontcareabout.gwt.client.GFEP;
-import us.dontcareabout.gwt.client.iCanUse.Feature;
+import us.dontcareabout.gst.client.GSTEP;
+import us.dontcareabout.gst.client.data.SheetIdDao;
 import us.dontcareabout.rqc.client.data.DataCenter;
-import us.dontcareabout.rqc.client.data.SheetId;
 import us.dontcareabout.rqc.client.ui.UiCenter;
 
-public class RQCEP extends GFEP {
+public class RQCEP extends GSTEP {
 	public RQCEP() {
-		needFeature(Feature.Storage);
+		super("RQC_ID", "1rr293klEVOjHUKiKgAotCpXBWYIASsCMZEZEVfkanP4");
 	}
 
 	@Override
@@ -27,6 +26,6 @@ public class RQCEP extends GFEP {
 	@Override
 	protected void start() {
 		UiCenter.start();
-		DataCenter.wantQuote(SheetId.get());
+		DataCenter.wantQuote(SheetIdDao.priorityValue());
 	}
 }
