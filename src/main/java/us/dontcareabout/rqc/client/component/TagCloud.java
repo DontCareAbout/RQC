@@ -91,10 +91,10 @@ public class TagCloud extends LayerContainer {
 		rebuildUI();
 	}
 
+
 	@Override
-	protected void onResize(int width, int height) {
+	protected void adjustMember(int width, int height) {
 		hll.resize(width, baseHeight);
-		super.onResize(width, height);
 	}
 
 	private void rebuildUI() {

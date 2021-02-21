@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://gwtproject.org/doctype/2.7.0/gwt-module.dtd">
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.8.0//EN" "http://www.gwtproject.org/doctype/2.8.0/gwt-module.dtd">
 <module rename-to="RQC">
-	<inherits name="us.dontcareabout.gxt.GXT" />
+	<inherits name="us.dontcareabout.gst.GST" />
 	<inherits name="com.sencha.gxt.theme.gray.Gray"/>
-	<inherits name="com.github.nmorel.gwtjackson.GwtJackson" />
-	<inherits name="com.google.common.cache.Cache"/>
 
 	<source path="client" />
 	<source path="shared" />
@@ -12,5 +10,5 @@
 	<entry-point class="us.dontcareabout.rqc.client.RQCEP" />
 	<stylesheet src="reset.css" />
 	<add-linker name="xsiframe" />
-	<collapse-all-properties />	
+	<collapse-all-properties />
 </module>

@@ -29,7 +29,7 @@ public class KeywordPanel extends FramedPanel {
 	private KeywordParam param = new KeywordParam();
 
 	public KeywordPanel() {
-		setHeadingText("關鍵字");
+		setHeading("關鍵字");
 
 		and.setBoxLabel("AND");
 		or.setBoxLabel("OR");
