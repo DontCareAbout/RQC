@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.google.common.base.Strings;
 
-import us.dontcareabout.gwt.client.google.SheetEntry;
+import us.dontcareabout.gwt.client.google.sheet.Row;
 
-public final class Quote extends SheetEntry {
+public final class Quote extends Row {
 	protected Quote() {}
 
 	public String getType() {
